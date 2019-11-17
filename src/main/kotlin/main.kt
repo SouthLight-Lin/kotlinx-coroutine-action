@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
  * Date： 2019/10/10
  */
 
-fun main(args: Array<String>) = runBlocking {
+fun main(args: Array<String>) = runBlocking<Unit> {
 
     // 等待一个作业
     val job = GlobalScope.launch {
@@ -21,4 +21,16 @@ fun main(args: Array<String>) = runBlocking {
     println("Hello")
     job.join()  // 等待直到子协程执行完
 
+    launch {
+        repeat(100) {
+            println("${Thread.currentThread().name} val: ${it}")
+        }
+    }
+
+    println("${Thread.currentThread().name} job: done")
+}
+
+inline fun func(crossinline l:() -> Unit) {
+    l.invoke()
+    return
 }
